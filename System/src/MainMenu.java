@@ -184,7 +184,8 @@ public class MainMenu extends JFrame implements ActionListener, MouseListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource()==openCalcBtn){
-            
+            new GradeCalculator();
+            dispose();
         }
         if(e.getSource()==openGWABtn){
 
@@ -199,7 +200,8 @@ public class MainMenu extends JFrame implements ActionListener, MouseListener {
     @Override
     public void mouseClicked(MouseEvent e) {
         if(e.getSource()==firstpanel){
-            
+            new GradeCalculator();
+            dispose();
         }
         if(e.getSource()==secondpanel){
 

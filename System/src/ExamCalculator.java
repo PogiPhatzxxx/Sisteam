@@ -2,12 +2,14 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
+import java.text.DecimalFormat;
 
 public class ExamCalculator extends JFrame implements ActionListener, MouseListener {
     JTextField textfield, subject, maxScore;
     JButton submitBtn, toHome, toGWA, toGCAL, toCONFIG;
     JLabel result;
     JPanel historypanel;
+    DecimalFormat df = new DecimalFormat("0.00");
 
     ArrayList<String> historyList = new ArrayList<>();
     ArrayList<String> subjects = new ArrayList<>();
@@ -146,8 +148,8 @@ public class ExamCalculator extends JFrame implements ActionListener, MouseListe
         submitBtn = new JButton(">"); // Button
         submitBtn.setBounds(360, 170, 50, 50);
         submitBtn.setFont(new Font("Arial", Font.BOLD, 18));
-        submitBtn.setForeground(Color.black);
-        submitBtn.setBackground(Color.gray);
+        submitBtn.setForeground(Color.white);
+        submitBtn.setBackground(Color.darkGray);
         submitBtn.setFocusable(false);
         submitBtn.addActionListener(this);
         submitBtn.addMouseListener(this);
@@ -200,11 +202,11 @@ public class ExamCalculator extends JFrame implements ActionListener, MouseListe
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == submitBtn) {
-            float ans = (Float.parseFloat(textfield.getText()) / Integer.parseInt(maxScore.getText())) * 50;
+            double ans = (Double.parseDouble(textfield.getText()) / Integer.parseInt(maxScore.getText())) * 50;
             if (ans > 30) {
-                result.setText(String.valueOf(ans));
+                result.setText(String.valueOf(df.format(ans)));
             } else if (ans < 29.99) {
-                result.setText(String.valueOf(ans));
+                result.setText(String.valueOf(df.format(ans)));
                 JOptionPane.showMessageDialog(null, "Tang Ina mo Mag Aral ka ng Mabuti BOBO",
                         "STUPID MESSAGE", JOptionPane.INFORMATION_MESSAGE);
             }
