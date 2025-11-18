@@ -8,7 +8,6 @@ public class MainMenu extends JFrame implements ActionListener, MouseListener {
     JButton openCalcBtn, openGWABtn, openExamBtn;
 
     MainMenu() {
-        // mainmenu frame
         this.setTitle("Main Menu");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(950, 600);
@@ -41,7 +40,6 @@ public class MainMenu extends JFrame implements ActionListener, MouseListener {
         toppanel.add(topimglabel);
         this.add(toppanel);
 
-        
         JLabel maintittle = new JLabel("Welcome to ASTIG-CAL");
         maintittle.setFont(new Font("Arial", Font.BOLD, 26));
         maintittle.setBounds(323, 50, 300, 50);
@@ -51,7 +49,6 @@ public class MainMenu extends JFrame implements ActionListener, MouseListener {
         description.setFont(new Font("Arial", Font.PLAIN, 16));
         description.setBounds(350, 80, 300, 50);
         this.add(description);
-
 
         // First Panel ==========================================================
         ImageIcon fpanelimg = new ImageIcon("img4.png");
@@ -164,12 +161,13 @@ public class MainMenu extends JFrame implements ActionListener, MouseListener {
         infoPanel.setBackground(Color.lightGray);
         infoPanel.setLayout(null);
 
-        JLabel gradingLabel = new JLabel("Grading System: Prelim 20%    •    Midterm 20%    •    Pre-final 20%  •    Final 40%");
+        JLabel gradingLabel = new JLabel(
+                "Grading System: Prelim 20%    •    Midterm 20%    •    Pre-final 20%  •    Final 40%");
         gradingLabel.setFont(new Font("Arial", Font.PLAIN, 16));
         gradingLabel.setForeground(Color.black);
         gradingLabel.setBounds(20, 15, 800, 25);
 
-        JLabel passingLabel = new JLabel("Passing Grade: 75%");
+        JLabel passingLabel = new JLabel("Passing Grade: 69.50%");
         passingLabel.setFont(new Font("Arial", Font.PLAIN, 16));
         passingLabel.setForeground(Color.black);
         passingLabel.setBounds(20, 45, 200, 25);
@@ -183,12 +181,13 @@ public class MainMenu extends JFrame implements ActionListener, MouseListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(e.getSource()==openCalcBtn){
+        if (e.getSource() == openCalcBtn) {
             new GradeCalculator();
             dispose();
         }
-        if(e.getSource()==openGWABtn){
-
+        if (e.getSource() == openGWABtn) {
+            new GWACalculator();
+            dispose();
         }
         if (e.getSource() == openExamBtn) {
             new ExamCalculator();
@@ -196,15 +195,15 @@ public class MainMenu extends JFrame implements ActionListener, MouseListener {
         }
     }
 
-    
     @Override
     public void mouseClicked(MouseEvent e) {
-        if(e.getSource()==firstpanel){
+        if (e.getSource() == firstpanel) {
             new GradeCalculator();
             dispose();
         }
-        if(e.getSource()==secondpanel){
-
+        if (e.getSource() == secondpanel) {
+            new GWACalculator();
+            dispose();
         }
         if (e.getSource() == thirdpanel) {
             new ExamCalculator();

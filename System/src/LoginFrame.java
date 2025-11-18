@@ -45,7 +45,6 @@ public class LoginFrame extends JFrame implements ActionListener, MouseListener 
         userTextField.addActionListener(this);
         right.add(userTextField);
 
-
         idTextField = new JTextField(); // TextField
         idTextField.setBounds(60, 340, 260, 50);
         idTextField.setFont(new Font("Arial", Font.PLAIN, 14));
@@ -76,7 +75,8 @@ public class LoginFrame extends JFrame implements ActionListener, MouseListener 
             } else {
                 this.dispose();
                 new MainMenu();
-                JOptionPane.showMessageDialog(null, "Welcome : " + usename, "Welcome User", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Welcome : " + usename, "Welcome User",
+                        JOptionPane.INFORMATION_MESSAGE);
             }
         }
 
@@ -88,7 +88,7 @@ public class LoginFrame extends JFrame implements ActionListener, MouseListener 
             idTextField.setText(null);
         } else if (e.getSource() == userTextField) {
             userTextField.setText(null);
-        } 
+        }
     }
 
     @Override

@@ -2,18 +2,23 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.text.DecimalFormat;
-
+import java.util.ArrayList;
 
 public class GradeCalculator extends JFrame implements ActionListener, MouseListener {
 
     JButton submitBtn, toHome, toGWA, toECAL, toCONFIG;
-    JTextField prelimField, midtermField, prefinalField, finalField;
+    JTextField prelimField, midtermField, prefinalField, finalField, subject;
+
+    JPanel historypanel;
     DecimalFormat df = new DecimalFormat("0.00");
 
+    int resulthistoryY = 70, subjecthistoryY = 50;
+    ArrayList<String> historyList = new ArrayList<>();
+    ArrayList<String> subjects = new ArrayList<>();
+
     GradeCalculator() {
-        // Settings
         this.setTitle("GWA Calculator");
-        this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setSize(950, 600);
         this.setLayout(null);
         this.setResizable(false);
@@ -42,17 +47,17 @@ public class GradeCalculator extends JFrame implements ActionListener, MouseList
         toppanel.add(toHome);
 
         ImageIcon ecalIcon = new ImageIcon("toECALimg.png");
-        JLabel gcalText = new JLabel();
-        gcalText.setText("ECAL");
-        gcalText.setFont(new Font("Arial", Font.BOLD, 14));
-        gcalText.setForeground(Color.white);
-        gcalText.setBounds(36, 8, 50, 20);
-        JLabel gcalLabel = new JLabel(ecalIcon);
-        gcalLabel.setBounds(3, 2, 30, 30);
+        JLabel ecalText = new JLabel();
+        ecalText.setText("ECAL");
+        ecalText.setFont(new Font("Arial", Font.BOLD, 14));
+        ecalText.setForeground(Color.white);
+        ecalText.setBounds(36, 8, 50, 20);
+        JLabel ecalLabel = new JLabel(ecalIcon);
+        ecalLabel.setBounds(3, 2, 30, 30);
         toECAL = new JButton();
         toECAL.setLayout(null);
-        toECAL.add(gcalLabel);
-        toECAL.add(gcalText);
+        toECAL.add(ecalLabel);
+        toECAL.add(ecalText);
         toECAL.setBackground(new Color(0, 102, 204));
         toECAL.setBounds(800, 8, 80, 35);
         toECAL.addMouseListener(this);
@@ -96,49 +101,85 @@ public class GradeCalculator extends JFrame implements ActionListener, MouseList
         JPanel mainpanel = new JPanel();
         mainpanel.setSize(500, 370);
         mainpanel.setLayout(null);
-        mainpanel.setBounds(195, 80, 560, 370);
+        mainpanel.setBounds(50, 90, 560, 370);
         mainpanel.setBackground(new Color(0, 102, 204));
         mainpanel.add(mainimglabel);
         this.add(mainpanel);
 
         JLabel text = new JLabel();
-        text.setText("GRADE CALCULATOR");
+        text.setText("NEEDED GRADE CALCULATOR");
         text.setFont(new Font("Arial", Font.BOLD, 24));
         text.setForeground(Color.white);
         text.setBounds(80, 15, 500, 50);
         mainpanel.add(text);
 
+        JLabel prelimLabel = new JLabel();
+        prelimLabel.setText("Prelim :");
+        prelimLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+        prelimLabel.setForeground(Color.white);
+        prelimLabel.setBounds(41, 105, 250, 50);
+        mainpanel.add(prelimLabel);
+
         prelimField = new JTextField(); // TextField
-        prelimField.setBounds(41, 134, 200, 50);
+        prelimField.setBounds(41, 140, 200, 50);
         prelimField.setFont(new Font("Arial", Font.PLAIN, 14));
         prelimField.setText("0");
         prelimField.addMouseListener(this);
         prelimField.addActionListener(this);
         mainpanel.add(prelimField);
 
+        JLabel midtermLabel = new JLabel();
+        midtermLabel.setText("Midterm :");
+        midtermLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+        midtermLabel.setForeground(Color.white);
+        midtermLabel.setBounds(319, 105, 250, 50);
+        mainpanel.add(midtermLabel);
+
         midtermField = new JTextField(); // TextField
-        midtermField.setBounds(319, 134, 200, 50);
+        midtermField.setBounds(319, 140, 200, 50);
         midtermField.setFont(new Font("Arial", Font.PLAIN, 14));
         midtermField.setText("0");
         midtermField.addMouseListener(this);
         midtermField.addActionListener(this);
         mainpanel.add(midtermField);
 
+        JLabel prefinalLabel = new JLabel();
+        prefinalLabel.setText("Prefinal :");
+        prefinalLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+        prefinalLabel.setForeground(Color.white);
+        prefinalLabel.setBounds(41, 180, 250, 50);
+        mainpanel.add(prefinalLabel);
+
         prefinalField = new JTextField(); // TextField
-        prefinalField.setBounds(41, 213, 200, 50);
+        prefinalField.setBounds(41, 215, 200, 50);
         prefinalField.setFont(new Font("Arial", Font.PLAIN, 14));
         prefinalField.setText("0");
         prefinalField.addMouseListener(this);
         prefinalField.addActionListener(this);
         mainpanel.add(prefinalField);
 
+        JLabel finalLabel = new JLabel();
+        finalLabel.setText("Final :");
+        finalLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+        finalLabel.setForeground(Color.white);
+        finalLabel.setBounds(319, 180, 250, 50);
+        mainpanel.add(finalLabel);
+
         finalField = new JTextField(); // TextField
-        finalField.setBounds(319, 213, 200, 50);
+        finalField.setBounds(319, 215, 200, 50);
         finalField.setFont(new Font("Arial", Font.PLAIN, 14));
         finalField.setText("0");
         finalField.addMouseListener(this);
         finalField.addActionListener(this);
         mainpanel.add(finalField);
+
+        subject = new JTextField(); // TextField
+        subject.setBounds(41, 90, 200, 20);
+        subject.setFont(new Font("Arial", Font.PLAIN, 14));
+        subject.setText("Subject");
+        subject.addMouseListener(this);
+        subject.addActionListener(this);
+        mainpanel.add(subject);
 
         submitBtn = new JButton("Calculate"); // Button
         submitBtn.setBounds(150, 300, 260, 50);
@@ -148,6 +189,28 @@ public class GradeCalculator extends JFrame implements ActionListener, MouseList
         submitBtn.setFocusable(false);
         submitBtn.addActionListener(this);
         mainpanel.add(submitBtn);
+
+        // History Panel==========================================================
+        historypanel = new JPanel();
+        historypanel.setSize(245, 370);
+        historypanel.setBounds(640, 90, 245, 370);
+        historypanel.setBackground(Color.lightGray);
+        historypanel.setLayout(null);
+        this.add(historypanel);
+
+        JPanel line = new JPanel();
+        line.setSize(245, 2);
+        line.setBounds(0, 50, 245, 2);
+        line.setBackground(Color.BLACK);
+        line.setLayout(null);
+        historypanel.add(line);
+
+        JLabel historylabel = new JLabel();
+        historylabel.setText("HISTORY");
+        historylabel.setFont(new Font("Arial", Font.BOLD, 24));
+        historylabel.setForeground(Color.BLACK);
+        historylabel.setBounds(70, 5, 250, 50);
+        historypanel.add(historylabel);
 
         this.setVisible(true);
     }
@@ -159,15 +222,15 @@ public class GradeCalculator extends JFrame implements ActionListener, MouseList
             double prelim = Double.parseDouble(prelimField.getText());
             double midterm = Double.parseDouble(midtermField.getText());
             double prefinal = Double.parseDouble(prefinalField.getText());
-            double target = 75;
+            double target = Config.cutOffGrade;
 
             double completed = 0;
             if (prelim > 0)
-                completed += prelim * 0.2;
+                completed += prelim * Config.prelimWeight;
             if (midterm > 0)
-                completed += midterm * 0.2;
+                completed += midterm * Config.midtermWeight;
             if (prefinal > 0)
-                completed += prefinal * 0.2;
+                completed += prefinal * Config.prefinalWeight;
 
             int missing = 0;
             if (prelim == 0)
@@ -177,15 +240,52 @@ public class GradeCalculator extends JFrame implements ActionListener, MouseList
             if (prefinal == 0)
                 missing++;
 
-            double remainingWeight = missing * 0.2 + 0.4;
+            double remainingWeight = missing * Config.prelimWeight + Config.finalWeight;
 
             double neededAverage = (target - completed) / remainingWeight;
 
-            double needed = neededAverage;
+            if (neededAverage > 100) {
+                JOptionPane.showMessageDialog(null,
+                        "Bagsak Kana Bobo " + df.format(neededAverage) + " Pa Lagson mo",
+                        "STUPID MESSAGE", JOptionPane.INFORMATION_MESSAGE);
+            } else if (neededAverage >= 60.00) {
+                JOptionPane.showMessageDialog(null,
+                        "You need an average of " + df.format(neededAverage) + " in the remaining exams to reach "
+                                + target,
+                        "STUPID MESSAGE", JOptionPane.INFORMATION_MESSAGE);
+            } else if (neededAverage < 59.49) {
+                JOptionPane.showMessageDialog(null,
+                        "Pasado kana Boiiiii " + df.format(neededAverage) + " Nalang Kailangan mo",
+                        "STUPID MESSAGE", JOptionPane.INFORMATION_MESSAGE);
+            }
 
-            JOptionPane.showMessageDialog(null,
-                    "You need an average of " + df.format(needed) + " in the remaining exams to reach " + target,
-                    "STUPID MESSAGE", JOptionPane.INFORMATION_MESSAGE);
+            subjects.add(subject.getText());
+            historyList.add(String.valueOf(df.format(neededAverage)));
+
+            if (historyList.size() > 1 && subjects.size() > 1) {
+                String historyprevResult = historyList.get(historyList.size() - 2);
+                String subjectprevResult = subjects.get(subjects.size() - 2);
+
+                JLabel subjectLabel = new JLabel();
+                subjectLabel.setText(subjectprevResult);
+                subjectLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+                subjectLabel.setForeground(Color.black);
+                subjectLabel.setBounds(20, subjecthistoryY, 200, 50);
+                historypanel.add(subjectLabel);
+
+                JLabel historyLabel = new JLabel();
+                historyLabel.setText(historyprevResult);
+                historyLabel.setFont(new Font("Arial", Font.PLAIN, 20));
+                historyLabel.setForeground(Color.black);
+                historyLabel.setBounds(20, resulthistoryY, 200, 50);
+                historypanel.add(historyLabel);
+
+                historypanel.repaint();
+
+                resulthistoryY += 40;
+                subjecthistoryY += 40;
+            }
+
         }
 
     }
@@ -200,6 +300,8 @@ public class GradeCalculator extends JFrame implements ActionListener, MouseList
             prefinalField.setText(null);
         } else if (e.getSource() == finalField) {
             finalField.setText(null);
+        } else if (e.getSource() == subject) {
+            subject.setText(null);
         } else if (e.getSource() == toHome) {
             new MainMenu();
             dispose();

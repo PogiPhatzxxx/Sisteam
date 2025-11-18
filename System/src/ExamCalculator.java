@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.text.DecimalFormat;
 
 public class ExamCalculator extends JFrame implements ActionListener, MouseListener {
-    JTextField textfield, subject, maxScore;
+    JTextField textfield, subject;
     JButton submitBtn, toHome, toGWA, toGCAL, toCONFIG;
     JLabel result;
     JPanel historypanel;
@@ -17,9 +17,8 @@ public class ExamCalculator extends JFrame implements ActionListener, MouseListe
     int resulthistoryY = 70, subjecthistoryY = 50;
 
     ExamCalculator() {
-        // Settings
         this.setTitle("EXAM Calculator");
-        this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setSize(950, 600);
         this.setLayout(null);
         this.setResizable(false);
@@ -102,7 +101,7 @@ public class ExamCalculator extends JFrame implements ActionListener, MouseListe
         JPanel mainpanel = new JPanel();
         mainpanel.setSize(500, 370);
         mainpanel.setLayout(null);
-        mainpanel.setBounds(50, 116, 560, 370);
+        mainpanel.setBounds(50, 90, 560, 370);
         mainpanel.setBackground(new Color(0, 102, 204));
         mainpanel.add(mainimglabel);
         this.add(mainpanel);
@@ -121,14 +120,6 @@ public class ExamCalculator extends JFrame implements ActionListener, MouseListe
         subject.addMouseListener(this);
         subject.addActionListener(this);
         mainpanel.add(subject);
-
-        maxScore = new JTextField(); // TextField
-        maxScore.setBounds(160, 110, 200, 20);
-        maxScore.setFont(new Font("Arial", Font.PLAIN, 14));
-        maxScore.setText("Enter Max Score");
-        maxScore.addMouseListener(this);
-        maxScore.addActionListener(this);
-        mainpanel.add(maxScore);
 
         JLabel label1 = new JLabel();
         label1.setText("Enter You Exam Score:");
@@ -177,7 +168,7 @@ public class ExamCalculator extends JFrame implements ActionListener, MouseListe
         // History Panel==========================================================
         historypanel = new JPanel();
         historypanel.setSize(245, 370);
-        historypanel.setBounds(640, 116, 245, 370);
+        historypanel.setBounds(640, 90, 245, 370);
         historypanel.setBackground(Color.lightGray);
         historypanel.setLayout(null);
         this.add(historypanel);
@@ -202,7 +193,7 @@ public class ExamCalculator extends JFrame implements ActionListener, MouseListe
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == submitBtn) {
-            double ans = (Double.parseDouble(textfield.getText()) / Integer.parseInt(maxScore.getText())) * 50;
+            double ans = (Double.parseDouble(textfield.getText()) / Config.examMaxScore) * 50;
             if (ans > 30) {
                 result.setText(String.valueOf(df.format(ans)));
             } else if (ans < 29.99) {
@@ -248,22 +239,19 @@ public class ExamCalculator extends JFrame implements ActionListener, MouseListe
         if (e.getSource() == subject) {
             subject.setText(null);
         }
-        if (e.getSource() == maxScore) {
-            maxScore.setText(null);
-        }
         if (e.getSource() == toHome) {
             new MainMenu();
             dispose();
         }
-        if (e.getSource() == toGWA){
+        if (e.getSource() == toGWA) {
             new GWACalculator();
             dispose();
         }
-        if (e.getSource() == toGCAL){
+        if (e.getSource() == toGCAL) {
             new GradeCalculator();
             dispose();
         }
-        if (e.getSource() == toCONFIG){
+        if (e.getSource() == toCONFIG) {
             new Config();
         }
     }
