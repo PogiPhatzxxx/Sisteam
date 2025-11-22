@@ -10,6 +10,9 @@ public class LoginFrame extends JFrame implements ActionListener, MouseListener 
     JPanel left, right, bg;
     JTextField idTextField, userTextField;
     ImageIcon leftimage, rightimage;
+    JComboBox course;
+
+    String[] courses = { "Select Course", "BSIT", "BMMA", "BSIS", "BSBA", "BSA", "BSTM", "BSHM" };
 
     LoginFrame() {
 
@@ -37,24 +40,31 @@ public class LoginFrame extends JFrame implements ActionListener, MouseListener 
         right.add(rightlabel);
         this.add(right);
 
-        userTextField = new JTextField(); // TextField
-        userTextField.setBounds(60, 280, 260, 50);
+        course = new JComboBox<>(courses);
+        course.setBounds(60, 270, 260, 50);
+        course.setFont(new Font("Arial", Font.PLAIN, 14));
+        course.setBackground(Color.WHITE);
+        course.addActionListener(this);
+        right.add(course);
+
+        userTextField = new JTextField();
+        userTextField.setBounds(60, 330, 260, 50);
         userTextField.setFont(new Font("Arial", Font.PLAIN, 14));
         userTextField.setText("Username");
         userTextField.addMouseListener(this);
         userTextField.addActionListener(this);
         right.add(userTextField);
 
-        idTextField = new JTextField(); // TextField
-        idTextField.setBounds(60, 340, 260, 50);
+        idTextField = new JTextField();
+        idTextField.setBounds(60, 390, 260, 50);
         idTextField.setFont(new Font("Arial", Font.PLAIN, 14));
         idTextField.setText("ID No.");
         idTextField.addMouseListener(this);
         idTextField.addActionListener(this);
         right.add(idTextField);
 
-        loginbtn = new JButton("Login"); // Button
-        loginbtn.setBounds(60, 410, 260, 50);
+        loginbtn = new JButton("Login");
+        loginbtn.setBounds(60, 450, 260, 50);
         loginbtn.setFont(new Font("Arial", Font.BOLD, 18));
         loginbtn.setForeground(Color.WHITE);
         loginbtn.setBackground(new Color(0, 102, 204));
@@ -68,18 +78,44 @@ public class LoginFrame extends JFrame implements ActionListener, MouseListener 
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == loginbtn) {
-            idnum = idTextField.getText();
-            usename = userTextField.getText();
-            if (idTextField.getText().isEmpty()) {
+            String selectedCourse = String.valueOf(course.getSelectedItem());
+            String idText = idTextField.getText();
+            String userText = userTextField.getText();
+
+            if (selectedCourse.equals("Select Course")) {
+                JOptionPane.showMessageDialog(null, "Please Select Course", "Error", JOptionPane.ERROR_MESSAGE);
+
+                return;
+            } else if ((userText.isEmpty() || userText.equals("Username"))) {
+                JOptionPane.showMessageDialog(null, "Please Enter Username ", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            } else if (idText.isEmpty() || idText.equals("ID No.")) {
                 JOptionPane.showMessageDialog(null, "Please Enter ID ", "Error", JOptionPane.ERROR_MESSAGE);
-            } else {
-                this.dispose();
-                new MainMenu();
-                JOptionPane.showMessageDialog(null, "Welcome : " + usename, "Welcome User",
-                        JOptionPane.INFORMATION_MESSAGE);
+                return;
             }
+
+            idnum = idText;
+            usename = userText;
+            this.dispose();
+            new MainMenu();
+            JOptionPane.showMessageDialog(null, "Welcome : " + usename, "Welcome User",
+                    JOptionPane.INFORMATION_MESSAGE);
         }
 
+        if (e.getSource() == course) {
+            String selectedCourse = String.valueOf(course.getSelectedItem());
+
+            NGconf.cutOffGrade = 70;
+            ECconf.examPercentage = 50;
+
+            if (selectedCourse.equals("BSIT")) {
+                NGconf.cutOffGrade = 70.50;
+            } else if (selectedCourse.equals("BSA")) {
+                NGconf.cutOffGrade = 76.00;
+                ECconf.examPercentage = 80;
+            }
+
+        }
     }
 
     @Override

@@ -114,7 +114,7 @@ public class ExamCalculator extends JFrame implements ActionListener, MouseListe
         mainpanel.add(text);
 
         subject = new JTextField(); // TextField
-        subject.setBounds(160, 80, 200, 20);
+        subject.setBounds(160, 100, 200, 20);
         subject.setFont(new Font("Arial", Font.PLAIN, 14));
         subject.setText("Subject");
         subject.addMouseListener(this);
@@ -193,7 +193,7 @@ public class ExamCalculator extends JFrame implements ActionListener, MouseListe
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == submitBtn) {
-            double ans = (Double.parseDouble(textfield.getText()) / Config.examMaxScore) * 50;
+            double ans = (Double.parseDouble(textfield.getText()) / ECconf.examMaxScore) * 50;
             if (ans > 30) {
                 result.setText(String.valueOf(df.format(ans)));
             } else if (ans < 29.99) {
@@ -252,7 +252,7 @@ public class ExamCalculator extends JFrame implements ActionListener, MouseListe
             dispose();
         }
         if (e.getSource() == toCONFIG) {
-            new Config();
+            new ECconf();
         }
     }
 

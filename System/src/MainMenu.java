@@ -55,9 +55,9 @@ public class MainMenu extends JFrame implements ActionListener, MouseListener {
         JLabel fpanellabel = new JLabel(fpanelimg);
         fpanellabel.setBounds(75, 25, 100, 100);
 
-        JLabel title1 = new JLabel("Grade Calculator");
+        JLabel title1 = new JLabel("Needed Grade Calculator");
         title1.setFont(new Font("Arial", Font.BOLD, 16));
-        title1.setBounds(63, 135, 250, 25);
+        title1.setBounds(30, 135, 250, 25);
 
         JLabel desc1 = new JLabel("Calculate your needed grades to pass");
         desc1.setFont(new Font("Arial", Font.PLAIN, 12));

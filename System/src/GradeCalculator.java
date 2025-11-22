@@ -17,7 +17,7 @@ public class GradeCalculator extends JFrame implements ActionListener, MouseList
     ArrayList<String> subjects = new ArrayList<>();
 
     GradeCalculator() {
-        this.setTitle("GWA Calculator");
+        this.setTitle("Needed Grade Calculator");
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setSize(950, 600);
         this.setLayout(null);
@@ -222,15 +222,16 @@ public class GradeCalculator extends JFrame implements ActionListener, MouseList
             double prelim = Double.parseDouble(prelimField.getText());
             double midterm = Double.parseDouble(midtermField.getText());
             double prefinal = Double.parseDouble(prefinalField.getText());
-            double target = Config.cutOffGrade;
+            double finalExam = Double.parseDouble(finalField.getText());
+            double target = NGconf.cutOffGrade;
 
             double completed = 0;
             if (prelim > 0)
-                completed += prelim * Config.prelimWeight;
+                completed += prelim * NGconf.prelimWeight;
             if (midterm > 0)
-                completed += midterm * Config.midtermWeight;
+                completed += midterm * NGconf.midtermWeight;
             if (prefinal > 0)
-                completed += prefinal * Config.prefinalWeight;
+                completed += prefinal * NGconf.prefinalWeight;
 
             int missing = 0;
             if (prelim == 0)
@@ -240,8 +241,7 @@ public class GradeCalculator extends JFrame implements ActionListener, MouseList
             if (prefinal == 0)
                 missing++;
 
-            double remainingWeight = missing * Config.prelimWeight + Config.finalWeight;
-
+            double remainingWeight = missing * NGconf.prelimWeight + NGconf.finalWeight;
             double neededAverage = (target - completed) / remainingWeight;
 
             if (neededAverage > 100) {
@@ -250,7 +250,7 @@ public class GradeCalculator extends JFrame implements ActionListener, MouseList
                         "STUPID MESSAGE", JOptionPane.INFORMATION_MESSAGE);
             } else if (neededAverage >= 60.00) {
                 JOptionPane.showMessageDialog(null,
-                        "You need an average of " + df.format(neededAverage) + " in the remaining exams to reach "
+                        "You need an average of " + df.format(neededAverage) + " in the Next Examination to reach "
                                 + target,
                         "STUPID MESSAGE", JOptionPane.INFORMATION_MESSAGE);
             } else if (neededAverage < 59.49) {
@@ -260,7 +260,7 @@ public class GradeCalculator extends JFrame implements ActionListener, MouseList
             }
 
             subjects.add(subject.getText());
-            historyList.add(String.valueOf(df.format(neededAverage)));
+            historyList.add(df.format(neededAverage));
 
             if (historyList.size() > 1 && subjects.size() > 1) {
                 String historyprevResult = historyList.get(historyList.size() - 2);
@@ -287,7 +287,6 @@ public class GradeCalculator extends JFrame implements ActionListener, MouseList
             }
 
         }
-
     }
 
     @Override
@@ -312,7 +311,7 @@ public class GradeCalculator extends JFrame implements ActionListener, MouseList
             new ExamCalculator();
             dispose();
         } else if (e.getSource() == toCONFIG) {
-            new Config();
+            new NGconf();
         }
 
     }

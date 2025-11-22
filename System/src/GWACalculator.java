@@ -225,7 +225,7 @@ public class GWACalculator extends JFrame implements ActionListener, MouseListen
             double prefinal = Double.parseDouble(prefinalField.getText());
             double finals = Double.parseDouble(finalField.getText());
 
-            double result = (prelim + midterm + prefinal) * Config.prelimWeight + (finals * Config.finalWeight);
+            double result = (prelim + midterm + prefinal) * GWAconf.prelimWeight + (finals * GWAconf.finalWeight);
 
             JOptionPane.showMessageDialog(null,
                     "Your GWA is " + df.format(result),
@@ -282,7 +282,7 @@ public class GWACalculator extends JFrame implements ActionListener, MouseListen
             new ExamCalculator();
             dispose();
         } else if (e.getSource() == toCONFIG) {
-            new Config();
+            new GWAconf();
         }
 
     }
