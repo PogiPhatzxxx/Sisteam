@@ -6,18 +6,20 @@ import java.util.ArrayList;
 
 public class GWACalculator extends JFrame implements ActionListener, MouseListener {
 
-    JButton submitBtn, toHome, toGCAL, toECAL, toCONFIG;
-    JTextField prelimField, midtermField, prefinalField, finalField, subject;
-    JPanel historypanel;
+    // Summary Labels
+    JLabel gwaLabel, unitsLabel, statusLabel;
+    JButton addcourseBtn, calculateBtn;
+    JButton submitBtn, toHome, toGWA, toECAL, toCONFIG;
+
+    JScrollPane f2;
+    JPanel container;
 
     DecimalFormat df = new DecimalFormat("0.00");
 
-    int resulthistoryY = 70, subjecthistoryY = 50;
+    ArrayList<JPanel> coursePanels = new ArrayList<>();
 
-    ArrayList<String> historyList = new ArrayList<>();
-    ArrayList<String> subjects = new ArrayList<>();
+    public GWACalculator() {
 
-    GWACalculator() {
         this.setTitle("GWA Calculator");
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setSize(950, 600);
@@ -29,16 +31,16 @@ public class GWACalculator extends JFrame implements ActionListener, MouseListen
         JLabel topimglabel = new JLabel(topimg);
         topimglabel.setBounds(11, -6, 70, 70);
 
+        ImageIcon mainimg = new ImageIcon("img5.2.png");
+        JLabel mainimglabel = new JLabel(mainimg);
+        mainimglabel.setBounds(15, 15, 50, 50);
+
         JPanel toppanel = new JPanel();
         toppanel.setSize(950, 50);
         toppanel.setBackground(Color.yellow);
         toppanel.setLayout(null);
         toppanel.add(topimglabel);
         this.add(toppanel);
-
-        ImageIcon mainimg = new ImageIcon("img5.2.png");
-        JLabel mainimglabel = new JLabel(mainimg);
-        mainimglabel.setBounds(15, 15, 50, 50);
 
         ImageIcon homeIcon = new ImageIcon("toHOMEimg.png");
         toHome = new JButton(homeIcon);
@@ -64,22 +66,23 @@ public class GWACalculator extends JFrame implements ActionListener, MouseListen
         toECAL.addMouseListener(this);
         toppanel.add(toECAL);
 
-        ImageIcon gcalIcon = new ImageIcon("toGCALimg.png");
-        JLabel gcalText = new JLabel();
-        gcalText.setText("GCAL");
-        gcalText.setFont(new Font("Arial", Font.BOLD, 14));
-        gcalText.setForeground(Color.white);
-        gcalText.setBounds(38, 8, 50, 20);
-        JLabel gcalLabel = new JLabel(gcalIcon);
-        gcalLabel.setBounds(3, 2, 30, 30);
-        toGCAL = new JButton();
-        toGCAL.setLayout(null);
-        toGCAL.add(gcalLabel);
-        toGCAL.add(gcalText);
-        toGCAL.setBackground(new Color(0, 102, 204));
-        toGCAL.setBounds(715, 8, 80, 35);
-        toGCAL.addMouseListener(this);
-        toppanel.add(toGCAL);
+        ImageIcon gwaIcon = new ImageIcon("toGWAimg.png");
+        JLabel gwaText = new JLabel();
+        gwaText.setText("GWA");
+        gwaText.setFont(new Font("Arial", Font.BOLD, 14));
+        gwaText.setForeground(Color.white);
+        gwaText.setBounds(38, 8, 50, 20);
+        
+        JLabel gwaLabel2 = new JLabel(gwaIcon);
+        gwaLabel2.setBounds(3, 2, 30, 30);
+        toGWA = new JButton();
+        toGWA.setLayout(null);
+        toGWA.add(gwaLabel2);
+        toGWA.add(gwaText);
+        toGWA.setBackground(new Color(0, 102, 204));
+        toGWA.setBounds(715, 8, 80, 35);
+        toGWA.addMouseListener(this);
+        toppanel.add(toGWA);
 
         ImageIcon configIcon = new ImageIcon("toCONFIGimg.png");
         JLabel configText = new JLabel();
@@ -98,11 +101,9 @@ public class GWACalculator extends JFrame implements ActionListener, MouseListen
         toCONFIG.addMouseListener(this);
         toppanel.add(toCONFIG);
 
-        // Mainpanel=======================================================
-        JPanel mainpanel = new JPanel();
-        mainpanel.setSize(500, 370);
+        JPanel mainpanel = new JPanel(null);
         mainpanel.setLayout(null);
-        mainpanel.setBounds(50, 90, 560, 370);
+        mainpanel.setBounds(0, 50, 950, 550);
         mainpanel.setBackground(new Color(0, 102, 204));
         mainpanel.add(mainimglabel);
         this.add(mainpanel);
@@ -114,177 +115,221 @@ public class GWACalculator extends JFrame implements ActionListener, MouseListen
         text.setBounds(80, 15, 500, 50);
         mainpanel.add(text);
 
-        JLabel prelimLabel = new JLabel();
-        prelimLabel.setText("Prelim :");
-        prelimLabel.setFont(new Font("Arial", Font.PLAIN, 14));
-        prelimLabel.setForeground(Color.white);
-        prelimLabel.setBounds(41, 105, 250, 50);
-        mainpanel.add(prelimLabel);
+        JPanel f1 = new JPanel(null);
+        f1.setBounds(63, 80, 810, 65);
+        f1.setBackground(Color.white);
+        mainpanel.add(f1);
 
-        prelimField = new JTextField(); // TextField
-        prelimField.setBounds(41, 140, 200, 50);
-        prelimField.setFont(new Font("Arial", Font.PLAIN, 14));
-        prelimField.setText("0");
-        prelimField.addMouseListener(this);
-        prelimField.addActionListener(this);
-        mainpanel.add(prelimField);
+        gwaLabel = new JLabel("GWA : 00.00%");
+        gwaLabel.setFont(new Font("Arial", Font.BOLD, 24));
+        gwaLabel.setBounds(20, 10, 250, 40);
+        f1.add(gwaLabel);
 
-        JLabel midtermLabel = new JLabel();
-        midtermLabel.setText("Midterm :");
-        midtermLabel.setFont(new Font("Arial", Font.PLAIN, 14));
-        midtermLabel.setForeground(Color.white);
-        midtermLabel.setBounds(319, 105, 250, 50);
-        mainpanel.add(midtermLabel);
+        JPanel line1 = new JPanel();
+        line1.setBounds(190, 0, 2, 65);
+        line1.setBackground(Color.BLACK);
+        f1.add(line1);
 
-        midtermField = new JTextField(); // TextField
-        midtermField.setBounds(319, 140, 200, 50);
-        midtermField.setFont(new Font("Arial", Font.PLAIN, 14));
-        midtermField.setText("0");
-        midtermField.addMouseListener(this);
-        midtermField.addActionListener(this);
-        mainpanel.add(midtermField);
+        unitsLabel = new JLabel("Total Units : 0");
+        unitsLabel.setFont(new Font("Arial", Font.BOLD, 24));
+        unitsLabel.setBounds(205, 10, 250, 40);
+        f1.add(unitsLabel);
 
-        JLabel prefinalLabel = new JLabel();
-        prefinalLabel.setText("Prefinal :");
-        prefinalLabel.setFont(new Font("Arial", Font.PLAIN, 14));
-        prefinalLabel.setForeground(Color.white);
-        prefinalLabel.setBounds(41, 180, 250, 50);
-        mainpanel.add(prefinalLabel);
+        JPanel line2 = new JPanel();
+        line2.setBounds(390, 0, 2, 65);
+        line2.setBackground(Color.BLACK);
+        f1.add(line2);
 
-        prefinalField = new JTextField(); // TextField
-        prefinalField.setBounds(41, 215, 200, 50);
-        prefinalField.setFont(new Font("Arial", Font.PLAIN, 14));
-        prefinalField.setText("0");
-        prefinalField.addMouseListener(this);
-        prefinalField.addActionListener(this);
-        mainpanel.add(prefinalField);
+        statusLabel = new JLabel("Status : -");
+        statusLabel.setFont(new Font("Arial", Font.BOLD, 24));
+        statusLabel.setBounds(405, 10, 250, 40);
+        f1.add(statusLabel);
 
-        JLabel finalLabel = new JLabel();
-        finalLabel.setText("Final :");
-        finalLabel.setFont(new Font("Arial", Font.PLAIN, 14));
-        finalLabel.setForeground(Color.white);
-        finalLabel.setBounds(319, 180, 250, 50);
-        mainpanel.add(finalLabel);
+        addcourseBtn = new JButton("Add Course");
+        addcourseBtn.setBounds(692, 23, 160, 50);
+        addcourseBtn.setFont(new Font("Arial", Font.BOLD, 22));
+        addcourseBtn.setBackground(Color.darkGray);
+        addcourseBtn.setForeground(Color.white);
+        addcourseBtn.setFocusable(false);
+        addcourseBtn.addActionListener(this);
+        mainpanel.add(addcourseBtn);
 
-        finalField = new JTextField(); // TextField
-        finalField.setBounds(319, 215, 200, 50);
-        finalField.setFont(new Font("Arial", Font.PLAIN, 14));
-        finalField.setText("0");
-        finalField.addMouseListener(this);
-        finalField.addActionListener(this);
-        mainpanel.add(finalField);
+        calculateBtn = new JButton("Calculate");
+        calculateBtn.setBounds(630, 7, 160, 50);
+        calculateBtn.setFont(new Font("Arial", Font.BOLD, 22));
+        calculateBtn.setBackground(new Color(0, 102, 204));
+        calculateBtn.setForeground(Color.white);
+        calculateBtn.setFocusable(false);
+        calculateBtn.addActionListener(this);
+        f1.add(calculateBtn);
 
-        subject = new JTextField(); // TextField
-        subject.setBounds(41, 90, 200, 20);
-        subject.setFont(new Font("Arial", Font.PLAIN, 14));
-        subject.setText("Subject");
-        subject.addMouseListener(this);
-        subject.addActionListener(this);
-        mainpanel.add(subject);
+        f2 = new JScrollPane();
+        f2.setBounds(63, 160, 810, 330);
+        mainpanel.add(f2);
 
-        submitBtn = new JButton("Calculate"); // Button
-        submitBtn.setBounds(150, 300, 260, 50);
-        submitBtn.setFont(new Font("Arial", Font.BOLD, 18));
-        submitBtn.setForeground(Color.white);
-        submitBtn.setBackground(Color.darkGray);
-        submitBtn.setFocusable(false);
-        submitBtn.addActionListener(this);
-        mainpanel.add(submitBtn);
+        container = new JPanel(null);
+        container.setPreferredSize(new Dimension(780, 600));
+        f2.setViewportView(container);
 
-        // History Panel==========================================================
-        historypanel = new JPanel();
-        historypanel.setSize(245, 370);
-        historypanel.setBounds(640, 90, 245, 370);
-        historypanel.setBackground(Color.lightGray);
-        historypanel.setLayout(null);
-        this.add(historypanel);
-
-        JPanel line = new JPanel();
-        line.setSize(245, 2);
-        line.setBounds(0, 50, 245, 2);
-        line.setBackground(Color.BLACK);
-        line.setLayout(null);
-        historypanel.add(line);
-
-        JLabel historylabel = new JLabel();
-        historylabel.setText("HISTORY");
-        historylabel.setFont(new Font("Arial", Font.BOLD, 24));
-        historylabel.setForeground(Color.BLACK);
-        historylabel.setBounds(70, 5, 250, 50);
-        historypanel.add(historylabel);
+        addNewCoursePanel();
 
         this.setVisible(true);
     }
 
+    public void addNewCoursePanel() {
+
+        JPanel p = new JPanel(null);
+        p.setBackground(Color.lightGray);
+        p.setBounds(25, 25 + (coursePanels.size() * 150), 760, 130);
+
+        JTextField coursecodeField = new JTextField("Course Code");
+        coursecodeField.setBounds(15, 15, 165, 35);
+        coursecodeField.addMouseListener(this);
+        p.add(coursecodeField);
+
+        JTextField coursenameField = new JTextField("Course Name");
+        coursenameField.setBounds(203, 15, 165, 35);
+        coursenameField.addMouseListener(this);
+        p.add(coursenameField);
+
+        JTextField unitsField = new JTextField("Units");
+        unitsField.setBounds(393, 15, 165, 35);
+        unitsField.addMouseListener(this);
+        p.add(unitsField);
+
+        JLabel averageLabel = new JLabel("AVG: 00.00%");
+        averageLabel.setBounds(580, 8, 170, 50);
+        averageLabel.setFont(new Font("Arial", Font.BOLD, 18));
+        p.add(averageLabel);
+
+        JButton removeBtn = new JButton("X");
+        removeBtn.setBounds(710, 15, 35, 35);
+        removeBtn.setBackground(Color.red);
+        removeBtn.setForeground(Color.white);
+        removeBtn.setFocusable(false);
+        p.add(removeBtn);
+
+        JTextField prelimField = new JTextField("Prelim");
+        prelimField.setBounds(15, 65, 165, 55);
+        prelimField.addMouseListener(this);
+        p.add(prelimField);
+
+        JTextField midtermField = new JTextField("Midterm");
+        midtermField.setBounds(203, 65, 165, 55);
+        midtermField.addMouseListener(this);
+        p.add(midtermField);
+
+        JTextField prefinalField = new JTextField("Prefinal");
+        prefinalField.setBounds(393, 65, 165, 55);
+        prefinalField.addMouseListener(this);
+        p.add(prefinalField);
+
+        JTextField finalField = new JTextField("Final");
+        finalField.setBounds(580, 65, 165, 55);
+        finalField.addMouseListener(this);
+        p.add(finalField);
+
+        removeBtn.addActionListener(e -> {
+
+            container.remove(p);
+            coursePanels.remove(p);
+
+            for (int i = 0; i < coursePanels.size(); i++) {
+                JPanel panel = coursePanels.get(i);
+                panel.setLocation(25, 25 + (i * 150));
+            }
+
+            container.repaint();
+            
+
+        });
+
+        coursePanels.add(p);
+        container.add(p);
+        container.repaint();
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == submitBtn) {
 
-            double prelim = Double.parseDouble(prelimField.getText());
-            double midterm = Double.parseDouble(midtermField.getText());
-            double prefinal = Double.parseDouble(prefinalField.getText());
-            double finals = Double.parseDouble(finalField.getText());
+        if (e.getSource() == addcourseBtn) {
+            addNewCoursePanel();
+        }
 
-            double result = (prelim + midterm + prefinal) * GWAconf.prelimWeight + (finals * GWAconf.finalWeight);
+        if (e.getSource() == calculateBtn) {
 
-            JOptionPane.showMessageDialog(null,
-                    "Your GWA is " + df.format(result),
-                    "STUPID MESSAGE", JOptionPane.INFORMATION_MESSAGE);
+            double totalUnits = 0;
+            double totalWeighted = 0;
 
-            subjects.add(subject.getText());
-            historyList.add(String.valueOf(df.format(result)));
+            for (JPanel p : coursePanels) {
 
-            if (historyList.size() > 1 && subjects.size() > 1) {
-                String historyprevResult = historyList.get(historyList.size() - 2);
-                String subjectprevResult = subjects.get(subjects.size() - 2);
+                // get components
+                JTextField unitsField = (JTextField) p.getComponent(2);
+                JLabel avgLabel = (JLabel) p.getComponent(3);
 
-                JLabel subjectLabel = new JLabel();
-                subjectLabel.setText(subjectprevResult);
-                subjectLabel.setFont(new Font("Arial", Font.PLAIN, 14));
-                subjectLabel.setForeground(Color.black);
-                subjectLabel.setBounds(20, subjecthistoryY, 200, 50);
-                historypanel.add(subjectLabel);
+                JTextField prelim = (JTextField) p.getComponent(5);
+                JTextField mid = (JTextField) p.getComponent(6);
+                JTextField prefi = (JTextField) p.getComponent(7);
+                JTextField fin = (JTextField) p.getComponent(8);
 
-                JLabel historyLabel = new JLabel();
-                historyLabel.setText(historyprevResult);
-                historyLabel.setFont(new Font("Arial", Font.PLAIN, 20));
-                historyLabel.setForeground(Color.black);
-                historyLabel.setBounds(20, resulthistoryY, 200, 50);
-                historypanel.add(historyLabel);
+                double u = 0, avg = 0;
+                double p1 = 0, m1 = 0, pf1 = 0, f1 = 0;
 
-                historypanel.repaint();
+                try {
+                    u = Double.parseDouble(unitsField.getText());
+                } catch (Exception ex) {
+                }
+                try {
+                    p1 = Double.parseDouble(prelim.getText());
+                } catch (Exception ex) {
+                }
+                try {
+                    m1 = Double.parseDouble(mid.getText());
+                } catch (Exception ex) {
+                }
+                try {
+                    pf1 = Double.parseDouble(prefi.getText());
+                } catch (Exception ex) {
+                }
+                try {
+                    f1 = Double.parseDouble(fin.getText());
+                } catch (Exception ex) {
+                }
 
-                resulthistoryY += 40;
-                subjecthistoryY += 40;
+                avg = (p1 + m1 + pf1) * 0.2 + (f1 * 0.4);
+
+                avgLabel.setText("AVG: " + df.format(avg) + "%");
+
+                totalUnits += u;
+                totalWeighted += avg * u;
+            }
+
+            unitsLabel.setText("Total Units : " + (int) totalUnits);
+
+            if (totalUnits > 0) {
+                double gwa = totalWeighted / totalUnits;
+                gwaLabel.setText("GWA : " + df.format(gwa) + "%");
+
+                if (gwa >= 75) {
+                    statusLabel.setText("Status : PASSING");
+                    statusLabel.setForeground(new Color(0, 150, 0));
+                } else {
+                    statusLabel.setText("Status : FAILING");
+                    statusLabel.setForeground(Color.red);
+                }
+            } else {
+                gwaLabel.setText("GWA : 00.00%");
+                statusLabel.setText("Status : -");
             }
         }
     }
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        if (e.getSource() == prelimField) {
-            prelimField.setText(null);
-        } else if (e.getSource() == midtermField) {
-            midtermField.setText(null);
-        } else if (e.getSource() == prefinalField) {
-            prefinalField.setText(null);
-        } else if (e.getSource() == finalField) {
-            finalField.setText(null);
-        } else if (e.getSource() == subject) {
-            subject.setText(null);
-        } else if (e.getSource() == toHome) {
-            new MainMenu();
-            dispose();
-        } else if (e.getSource() == toGCAL) {
-            new GradeCalculator();
-            dispose();
-        } else if (e.getSource() == toECAL) {
-            new ExamCalculator();
-            dispose();
-        } else if (e.getSource() == toCONFIG) {
-            new GWAconf();
+        if (e.getSource() instanceof JTextField) {
+            JTextField tf = (JTextField) e.getSource();
+            tf.setText("");
         }
-
     }
 
     @Override

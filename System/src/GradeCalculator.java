@@ -219,19 +219,61 @@ public class GradeCalculator extends JFrame implements ActionListener, MouseList
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == submitBtn) {
 
+            String empty = "";
+
+            if (prelimField.getText().isEmpty())
+                empty += "Prelim\n";
+            if (midtermField.getText().isEmpty())
+                empty += "Midterm\n";
+            if (prefinalField.getText().isEmpty())
+                empty += "Pre-Final\n";
+            if (finalField.getText().isEmpty())
+                empty += "Final\n";
+
+            if (!empty.equals("")) {
+                JOptionPane.showMessageDialog(
+                        null,
+                        "Error: These fields are empty:\n" + empty + "\nPlease enter '0' in empty fields.",
+                        "Input Error",
+                        JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
             double prelim = Double.parseDouble(prelimField.getText());
             double midterm = Double.parseDouble(midtermField.getText());
             double prefinal = Double.parseDouble(prefinalField.getText());
             double finalExam = Double.parseDouble(finalField.getText());
             double target = NGconf.cutOffGrade;
 
+            if (prelim > 0 && midterm > 0 && prefinal > 0 && finalExam > 0) {
+
+                double gwa = (prelim + midterm + prefinal) * 0.2 + (finalExam * 0.4);
+
+                if (gwa >= NGconf.cutOffGrade) {
+                    JOptionPane.showMessageDialog(
+                            null,
+                            "Your Final GWA is: " + df.format(gwa) +
+                                    "\n\nCongratulations! You have PASSED this subject! 🎉",
+                            "GWA Result",
+                            JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(
+                            null,
+                            "Your Final GWA is: " + df.format(gwa) +
+                                    "\n\nYou have FAILED this subject. Whahahaha",
+                            "GWA Result",
+                            JOptionPane.ERROR_MESSAGE);
+                }
+                return;
+            }
+
             double completed = 0;
             if (prelim > 0)
-                completed += prelim * NGconf.prelimWeight;
+                completed += prelim * 0.20;
             if (midterm > 0)
-                completed += midterm * NGconf.midtermWeight;
+                completed += midterm * 0.20;
             if (prefinal > 0)
-                completed += prefinal * NGconf.prefinalWeight;
+                completed += prefinal * 0.20;
 
             int missing = 0;
             if (prelim == 0)
@@ -241,26 +283,28 @@ public class GradeCalculator extends JFrame implements ActionListener, MouseList
             if (prefinal == 0)
                 missing++;
 
-            double remainingWeight = missing * NGconf.prelimWeight + NGconf.finalWeight;
+            double remainingWeight = missing * 0.20 + 0.40;
             double neededAverage = (target - completed) / remainingWeight;
 
-            if (neededAverage > 100) {
-                JOptionPane.showMessageDialog(null,
-                        "Bagsak Kana Bobo " + df.format(neededAverage) + " Pa Lagson mo",
-                        "STUPID MESSAGE", JOptionPane.INFORMATION_MESSAGE);
-            } else if (neededAverage >= 60.00) {
-                JOptionPane.showMessageDialog(null,
-                        "You need an average of " + df.format(neededAverage) + " in the Next Examination to reach "
-                                + target,
-                        "STUPID MESSAGE", JOptionPane.INFORMATION_MESSAGE);
-            } else if (neededAverage < 59.49) {
-                JOptionPane.showMessageDialog(null,
-                        "Pasado kana Boiiiii " + df.format(neededAverage) + " Nalang Kailangan mo",
-                        "STUPID MESSAGE", JOptionPane.INFORMATION_MESSAGE);
-            }
+            String msg = "You need at least:\n";
+
+            if (prelim == 0)
+                msg += df.format(neededAverage) + " in Prelim\n";
+            if (midterm == 0)
+                msg += df.format(neededAverage) + " in Midterm\n";
+            if (prefinal == 0)
+                msg += df.format(neededAverage) + " in Pre-Final\n";
+            if (finalExam == 0)
+                msg += df.format(neededAverage) + " in Final\n";
+
+            JOptionPane.showMessageDialog(
+                    null,
+                    msg,
+                    "Required Grades",
+                    JOptionPane.INFORMATION_MESSAGE);
 
             subjects.add(subject.getText());
-            historyList.add(df.format(neededAverage));
+            historyList.add(String.valueOf(df.format(neededAverage)));
 
             if (historyList.size() > 1 && subjects.size() > 1) {
                 String historyprevResult = historyList.get(historyList.size() - 2);
@@ -285,7 +329,6 @@ public class GradeCalculator extends JFrame implements ActionListener, MouseList
                 resulthistoryY += 40;
                 subjecthistoryY += 40;
             }
-
         }
     }
 
