@@ -155,7 +155,6 @@ public class MainMenu extends JFrame implements ActionListener, MouseListener {
         thirdpanel.addMouseListener(this);
         this.add(thirdpanel);
 
-        // Butom Panel============================================
         JPanel infoPanel = new JPanel();
         infoPanel.setBounds(40, 420, 855, 85);
         infoPanel.setBackground(Color.lightGray);
@@ -182,7 +181,7 @@ public class MainMenu extends JFrame implements ActionListener, MouseListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == openCalcBtn) {
-            new GradeCalculator();
+            new NeededGradeCalculator();
             dispose();
         }
         if (e.getSource() == openGWABtn) {
@@ -198,7 +197,7 @@ public class MainMenu extends JFrame implements ActionListener, MouseListener {
     @Override
     public void mouseClicked(MouseEvent e) {
         if (e.getSource() == firstpanel) {
-            new GradeCalculator();
+            new NeededGradeCalculator();
             dispose();
         }
         if (e.getSource() == secondpanel) {

@@ -6,17 +6,19 @@ import java.util.ArrayList;
 
 public class GWACalculator extends JFrame implements ActionListener, MouseListener {
 
-    // Summary Labels
     JLabel gwaLabel, unitsLabel, statusLabel;
     JButton addcourseBtn, calculateBtn;
-    JButton submitBtn, toHome, toGWA, toECAL, toCONFIG;
+    JButton submitBtn, toHome, toGCAL, toECAL, toCONFIG;
 
     JScrollPane f2;
     JPanel container;
 
     DecimalFormat df = new DecimalFormat("0.00");
 
-    ArrayList<JPanel> coursePanels = new ArrayList<>();
+    String course = LoginFrame.currentCourse;
+    ArrayList<String> subjectList = SubjectManager.getSubjectsByCourse(course);
+
+    ArrayList<JPanel> panelsArray = new ArrayList<>();
 
     public GWACalculator() {
 
@@ -66,23 +68,23 @@ public class GWACalculator extends JFrame implements ActionListener, MouseListen
         toECAL.addMouseListener(this);
         toppanel.add(toECAL);
 
-        ImageIcon gwaIcon = new ImageIcon("toGWAimg.png");
-        JLabel gwaText = new JLabel();
-        gwaText.setText("GWA");
-        gwaText.setFont(new Font("Arial", Font.BOLD, 14));
-        gwaText.setForeground(Color.white);
-        gwaText.setBounds(38, 8, 50, 20);
-        
-        JLabel gwaLabel2 = new JLabel(gwaIcon);
-        gwaLabel2.setBounds(3, 2, 30, 30);
-        toGWA = new JButton();
-        toGWA.setLayout(null);
-        toGWA.add(gwaLabel2);
-        toGWA.add(gwaText);
-        toGWA.setBackground(new Color(0, 102, 204));
-        toGWA.setBounds(715, 8, 80, 35);
-        toGWA.addMouseListener(this);
-        toppanel.add(toGWA);
+        ImageIcon gcalIcon = new ImageIcon("toGCALimg.png");
+        JLabel gcalText = new JLabel();
+        gcalText.setText("GCAL");
+        gcalText.setFont(new Font("Arial", Font.BOLD, 14));
+        gcalText.setForeground(Color.white);
+        gcalText.setBounds(36, 8, 50, 20);
+
+        JLabel gcalLabel = new JLabel(gcalIcon);
+        gcalLabel.setBounds(3, 2, 30, 30);
+        toGCAL = new JButton();
+        toGCAL.setLayout(null);
+        toGCAL.add(gcalLabel);
+        toGCAL.add(gcalText);
+        toGCAL.setBackground(new Color(0, 102, 204));
+        toGCAL.setBounds(715, 8, 80, 35);
+        toGCAL.addMouseListener(this);
+        toppanel.add(toGCAL);
 
         ImageIcon configIcon = new ImageIcon("toCONFIGimg.png");
         JLabel configText = new JLabel();
@@ -178,74 +180,70 @@ public class GWACalculator extends JFrame implements ActionListener, MouseListen
 
     public void addNewCoursePanel() {
 
-        JPanel p = new JPanel(null);
-        p.setBackground(Color.lightGray);
-        p.setBounds(25, 25 + (coursePanels.size() * 150), 760, 130);
+        JPanel coursesPanel = new JPanel(null);
+        coursesPanel.setBackground(Color.lightGray);
+        coursesPanel.setBounds(25, 25 + (panelsArray.size() * 150), 760, 130);
 
-        JTextField coursecodeField = new JTextField("Course Code");
-        coursecodeField.setBounds(15, 15, 165, 35);
-        coursecodeField.addMouseListener(this);
-        p.add(coursecodeField);
-
-        JTextField coursenameField = new JTextField("Course Name");
-        coursenameField.setBounds(203, 15, 165, 35);
-        coursenameField.addMouseListener(this);
-        p.add(coursenameField);
+        JComboBox<String> subjectsField = new JComboBox<>(subjectList.toArray(new String[0]));
+        subjectsField.setBounds(15, 15, 260, 35);
+        subjectsField.setBackground(Color.WHITE);
+        subjectsField.setForeground(Color.BLACK);
+        subjectsField.setFocusable(false);
+        coursesPanel.add(subjectsField);
 
         JTextField unitsField = new JTextField("Units");
-        unitsField.setBounds(393, 15, 165, 35);
+        unitsField.setBounds(300, 15, 165, 35);
         unitsField.addMouseListener(this);
-        p.add(unitsField);
+        coursesPanel.add(unitsField);
 
         JLabel averageLabel = new JLabel("AVG: 00.00%");
-        averageLabel.setBounds(580, 8, 170, 50);
-        averageLabel.setFont(new Font("Arial", Font.BOLD, 18));
-        p.add(averageLabel);
+        averageLabel.setBounds(525, 8, 170, 50);
+        averageLabel.setFont(new Font("Arial", Font.BOLD, 22));
+        coursesPanel.add(averageLabel);
 
         JButton removeBtn = new JButton("X");
         removeBtn.setBounds(710, 15, 35, 35);
         removeBtn.setBackground(Color.red);
         removeBtn.setForeground(Color.white);
         removeBtn.setFocusable(false);
-        p.add(removeBtn);
+        coursesPanel.add(removeBtn);
 
         JTextField prelimField = new JTextField("Prelim");
         prelimField.setBounds(15, 65, 165, 55);
         prelimField.addMouseListener(this);
-        p.add(prelimField);
+        coursesPanel.add(prelimField);
 
         JTextField midtermField = new JTextField("Midterm");
         midtermField.setBounds(203, 65, 165, 55);
         midtermField.addMouseListener(this);
-        p.add(midtermField);
+        coursesPanel.add(midtermField);
 
         JTextField prefinalField = new JTextField("Prefinal");
         prefinalField.setBounds(393, 65, 165, 55);
         prefinalField.addMouseListener(this);
-        p.add(prefinalField);
+        coursesPanel.add(prefinalField);
 
         JTextField finalField = new JTextField("Final");
         finalField.setBounds(580, 65, 165, 55);
         finalField.addMouseListener(this);
-        p.add(finalField);
+        coursesPanel.add(finalField);
 
         removeBtn.addActionListener(e -> {
 
-            container.remove(p);
-            coursePanels.remove(p);
+            container.remove(coursesPanel);
+            panelsArray.remove(coursesPanel);
 
-            for (int i = 0; i < coursePanels.size(); i++) {
-                JPanel panel = coursePanels.get(i);
+            for (int i = 0; i < panelsArray.size(); i++) {
+                JPanel panel = panelsArray.get(i);
                 panel.setLocation(25, 25 + (i * 150));
             }
 
             container.repaint();
-            
 
         });
 
-        coursePanels.add(p);
-        container.add(p);
+        panelsArray.add(coursesPanel);
+        container.add(coursesPanel);
         container.repaint();
     }
 
@@ -261,47 +259,33 @@ public class GWACalculator extends JFrame implements ActionListener, MouseListen
             double totalUnits = 0;
             double totalWeighted = 0;
 
-            for (JPanel p : coursePanels) {
+            for (JPanel coursesPanel : panelsArray) {
 
-                // get components
-                JTextField unitsField = (JTextField) p.getComponent(2);
-                JLabel avgLabel = (JLabel) p.getComponent(3);
+                JComboBox<String> subjectsField = (JComboBox<String>) coursesPanel.getComponent(1);
+                JTextField unitsField = (JTextField) coursesPanel.getComponent(2);
+                JLabel avgLabel = (JLabel) coursesPanel.getComponent(3);
 
-                JTextField prelim = (JTextField) p.getComponent(5);
-                JTextField mid = (JTextField) p.getComponent(6);
-                JTextField prefi = (JTextField) p.getComponent(7);
-                JTextField fin = (JTextField) p.getComponent(8);
+                JTextField prelim = (JTextField) coursesPanel.getComponent(5);
+                JTextField mid = (JTextField) coursesPanel.getComponent(6);
+                JTextField prefi = (JTextField) coursesPanel.getComponent(7);
+                JTextField fin = (JTextField) coursesPanel.getComponent(8);
 
-                double u = 0, avg = 0;
+                double units = 0, avg = 0;
                 double p1 = 0, m1 = 0, pf1 = 0, f1 = 0;
 
-                try {
-                    u = Double.parseDouble(unitsField.getText());
-                } catch (Exception ex) {
-                }
-                try {
-                    p1 = Double.parseDouble(prelim.getText());
-                } catch (Exception ex) {
-                }
-                try {
-                    m1 = Double.parseDouble(mid.getText());
-                } catch (Exception ex) {
-                }
-                try {
-                    pf1 = Double.parseDouble(prefi.getText());
-                } catch (Exception ex) {
-                }
-                try {
-                    f1 = Double.parseDouble(fin.getText());
-                } catch (Exception ex) {
-                }
+                units = Double.parseDouble(unitsField.getText());
+                p1 = Double.parseDouble(prelim.getText());
+                m1 = Double.parseDouble(mid.getText());
+                pf1 = Double.parseDouble(prefi.getText());
+                f1 = Double.parseDouble(fin.getText());
 
-                avg = (p1 + m1 + pf1) * 0.2 + (f1 * 0.4);
+                avg = ((p1 * GWAconf.prelimWeight) + (m1 * GWAconf.midtermWeight) + (pf1 * GWAconf.prefinalWeight)
+                        + (f1 * GWAconf.finalWeight));
 
                 avgLabel.setText("AVG: " + df.format(avg) + "%");
 
-                totalUnits += u;
-                totalWeighted += avg * u;
+                totalUnits += units;
+                totalWeighted += avg * units;
             }
 
             unitsLabel.setText("Total Units : " + (int) totalUnits);
@@ -329,6 +313,17 @@ public class GWACalculator extends JFrame implements ActionListener, MouseListen
         if (e.getSource() instanceof JTextField) {
             JTextField tf = (JTextField) e.getSource();
             tf.setText("");
+        } else if (e.getSource() == toHome) {
+            new MainMenu();
+            dispose();
+        } else if (e.getSource() == toGCAL) {
+            new NeededGradeCalculator();
+            dispose();
+        } else if (e.getSource() == toECAL) {
+            new ExamCalculator();
+            dispose();
+        } else if (e.getSource() == toCONFIG) {
+            new GWAconf();
         }
     }
 

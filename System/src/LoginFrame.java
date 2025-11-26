@@ -3,7 +3,8 @@ import java.awt.*;
 import java.awt.event.*;
 
 public class LoginFrame extends JFrame implements ActionListener, MouseListener {
-    public static String idnum, usename;
+    public static String idnum, usename, selectedCourse;
+    public static String currentCourse = "";
 
     JButton loginbtn;
     JLabel leftlabel, rightlabel;
@@ -15,8 +16,6 @@ public class LoginFrame extends JFrame implements ActionListener, MouseListener 
     String[] courses = { "Select Course", "BSIT", "BMMA", "BSIS", "BSBA", "BSA", "BSTM", "BSHM" };
 
     LoginFrame() {
-
-        // login frame
         this.setTitle("ASTIG-CAL");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(950, 600);
@@ -94,16 +93,22 @@ public class LoginFrame extends JFrame implements ActionListener, MouseListener 
                 return;
             }
 
-            idnum = idText;
+idnum = idText;
             usename = userText;
+            selectedCourse = String.valueOf(course.getSelectedItem());
+            currentCourse = selectedCourse; // Update currentCourse when logging in
             this.dispose();
             new MainMenu();
             JOptionPane.showMessageDialog(null, "Welcome : " + usename, "Welcome User",
                     JOptionPane.INFORMATION_MESSAGE);
         }
 
-        if (e.getSource() == course) {
+if (e.getSource() == course) {
             String selectedCourse = String.valueOf(course.getSelectedItem());
+            
+            if (!selectedCourse.equals("Select Course")) {
+                currentCourse = selectedCourse;
+            }
 
             NGconf.cutOffGrade = 70;
             ECconf.examPercentage = 50;

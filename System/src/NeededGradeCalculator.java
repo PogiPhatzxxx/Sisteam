@@ -4,19 +4,23 @@ import java.awt.event.*;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
-public class GradeCalculator extends JFrame implements ActionListener, MouseListener {
+public class NeededGradeCalculator extends JFrame implements ActionListener, MouseListener {
 
     JButton submitBtn, toHome, toGWA, toECAL, toCONFIG;
-    JTextField prelimField, midtermField, prefinalField, finalField, subject;
+    JTextField prelimField, midtermField, prefinalField, finalField;
+    JComboBox<String> subject;
 
     JPanel historypanel;
     DecimalFormat df = new DecimalFormat("0.00");
+
+    String course = LoginFrame.currentCourse;
+    ArrayList<String> subjectList = SubjectManager.getSubjectsByCourse(course);
 
     int resulthistoryY = 70, subjecthistoryY = 50;
     ArrayList<String> historyList = new ArrayList<>();
     ArrayList<String> subjects = new ArrayList<>();
 
-    GradeCalculator() {
+    NeededGradeCalculator() {
         this.setTitle("Needed Grade Calculator");
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setSize(950, 600);
@@ -97,7 +101,6 @@ public class GradeCalculator extends JFrame implements ActionListener, MouseList
         toCONFIG.addMouseListener(this);
         toppanel.add(toCONFIG);
 
-        // Mainpanel=======================================================
         JPanel mainpanel = new JPanel();
         mainpanel.setSize(500, 370);
         mainpanel.setLayout(null);
@@ -173,15 +176,15 @@ public class GradeCalculator extends JFrame implements ActionListener, MouseList
         finalField.addActionListener(this);
         mainpanel.add(finalField);
 
-        subject = new JTextField(); // TextField
-        subject.setBounds(41, 90, 200, 20);
-        subject.setFont(new Font("Arial", Font.PLAIN, 14));
-        subject.setText("Subject");
-        subject.addMouseListener(this);
+        subject = new JComboBox<>(subjectList.toArray(new String[0]));
+        subject.setBounds(41, 90, 200, 30);
+        subject.setBackground(Color.WHITE);
+        subject.setForeground(Color.BLACK);
+        subject.setFocusable(false);
         subject.addActionListener(this);
         mainpanel.add(subject);
 
-        submitBtn = new JButton("Calculate"); // Button
+        submitBtn = new JButton("Calculate");
         submitBtn.setBounds(150, 300, 260, 50);
         submitBtn.setFont(new Font("Arial", Font.BOLD, 18));
         submitBtn.setForeground(Color.white);
@@ -190,7 +193,6 @@ public class GradeCalculator extends JFrame implements ActionListener, MouseList
         submitBtn.addActionListener(this);
         mainpanel.add(submitBtn);
 
-        // History Panel==========================================================
         historypanel = new JPanel();
         historypanel.setSize(245, 370);
         historypanel.setBounds(640, 90, 245, 370);
@@ -247,13 +249,14 @@ public class GradeCalculator extends JFrame implements ActionListener, MouseList
 
             if (prelim > 0 && midterm > 0 && prefinal > 0 && finalExam > 0) {
 
-                double gwa = (prelim + midterm + prefinal) * 0.2 + (finalExam * 0.4);
+                double gwa = ((prelim * NGconf.prelimWeight) + (midterm * NGconf.midtermWeight)
+                        + (prefinal * NGconf.prefinalWeight) + (finalExam * NGconf.finalWeight));
 
                 if (gwa >= NGconf.cutOffGrade) {
                     JOptionPane.showMessageDialog(
                             null,
                             "Your Final GWA is: " + df.format(gwa) +
-                                    "\n\nCongratulations! You have PASSED this subject! 🎉",
+                                    "\n\nCongratulations! You have PASSED this subject!",
                             "GWA Result",
                             JOptionPane.INFORMATION_MESSAGE);
                 } else {
@@ -269,11 +272,11 @@ public class GradeCalculator extends JFrame implements ActionListener, MouseList
 
             double completed = 0;
             if (prelim > 0)
-                completed += prelim * 0.20;
+                completed += prelim * NGconf.prelimWeight;
             if (midterm > 0)
-                completed += midterm * 0.20;
+                completed += midterm * NGconf.midtermWeight;
             if (prefinal > 0)
-                completed += prefinal * 0.20;
+                completed += prefinal * NGconf.prefinalWeight;
 
             int missing = 0;
             if (prelim == 0)
@@ -283,7 +286,7 @@ public class GradeCalculator extends JFrame implements ActionListener, MouseList
             if (prefinal == 0)
                 missing++;
 
-            double remainingWeight = missing * 0.20 + 0.40;
+            double remainingWeight = missing * NGconf.prelimWeight + NGconf.finalWeight;
             double neededAverage = (target - completed) / remainingWeight;
 
             String msg = "You need at least:\n";
@@ -297,13 +300,34 @@ public class GradeCalculator extends JFrame implements ActionListener, MouseList
             if (finalExam == 0)
                 msg += df.format(neededAverage) + " in Final\n";
 
+            String motivationalMessage = "";
+            if (neededAverage > 100) {
+                motivationalMessage = "Bagsak Kana Boiii";
+            } else if (neededAverage >= 90) {
+                motivationalMessage = "Du Alanganin Na Haw";
+            } else if (neededAverage >= 80) {
+                motivationalMessage = "Kaya Mo Yan Laban Lang";
+            } else if (neededAverage >= 70) {
+                motivationalMessage = "Sus Basic Lang ni Saimo Ah";
+            } else if (neededAverage >= 60) {
+                motivationalMessage = "Gwapooo, Gamay Gamay lang Lagson mo Syaro ma Bagsak";
+            }
+
+            if (!motivationalMessage.isEmpty()) {
+                JOptionPane.showMessageDialog(
+                        null,
+                        motivationalMessage,
+                        "Message",
+                        JOptionPane.INFORMATION_MESSAGE);
+            }
+
             JOptionPane.showMessageDialog(
                     null,
                     msg,
                     "Required Grades",
                     JOptionPane.INFORMATION_MESSAGE);
 
-            subjects.add(subject.getText());
+            subjects.add(String.valueOf(subject.getSelectedItem()));
             historyList.add(String.valueOf(df.format(neededAverage)));
 
             if (historyList.size() > 1 && subjects.size() > 1) {
@@ -342,8 +366,7 @@ public class GradeCalculator extends JFrame implements ActionListener, MouseList
             prefinalField.setText(null);
         } else if (e.getSource() == finalField) {
             finalField.setText(null);
-        } else if (e.getSource() == subject) {
-            subject.setText(null);
+
         } else if (e.getSource() == toHome) {
             new MainMenu();
             dispose();

@@ -5,11 +5,15 @@ import java.util.ArrayList;
 import java.text.DecimalFormat;
 
 public class ExamCalculator extends JFrame implements ActionListener, MouseListener {
-    JTextField textfield, subject;
+    JTextField textfield;
+    JComboBox<String> subject;
     JButton submitBtn, toHome, toGWA, toGCAL, toCONFIG;
     JLabel result;
     JPanel historypanel;
     DecimalFormat df = new DecimalFormat("0.00");
+
+    String course = LoginFrame.currentCourse;
+    ArrayList<String> subjectList = SubjectManager.getSubjectsByCourse(course);
 
     ArrayList<String> historyList = new ArrayList<>();
     ArrayList<String> subjects = new ArrayList<>();
@@ -69,6 +73,7 @@ public class ExamCalculator extends JFrame implements ActionListener, MouseListe
         gcalText.setFont(new Font("Arial", Font.BOLD, 14));
         gcalText.setForeground(Color.white);
         gcalText.setBounds(36, 8, 50, 20);
+
         JLabel gcalLabel = new JLabel(gcalIcon);
         gcalLabel.setBounds(3, 2, 30, 30);
         toGCAL = new JButton();
@@ -97,7 +102,6 @@ public class ExamCalculator extends JFrame implements ActionListener, MouseListe
         toCONFIG.addMouseListener(this);
         toppanel.add(toCONFIG);
 
-        // Mainpanel=======================================================
         JPanel mainpanel = new JPanel();
         mainpanel.setSize(500, 370);
         mainpanel.setLayout(null);
@@ -113,11 +117,11 @@ public class ExamCalculator extends JFrame implements ActionListener, MouseListe
         text.setBounds(80, 15, 500, 50);
         mainpanel.add(text);
 
-        subject = new JTextField(); // TextField
-        subject.setBounds(160, 100, 200, 20);
-        subject.setFont(new Font("Arial", Font.PLAIN, 14));
-        subject.setText("Subject");
-        subject.addMouseListener(this);
+        subject = new JComboBox<>(subjectList.toArray(new String[0]));
+        subject.setBounds(160, 100, 200, 30);
+        subject.setBackground(Color.WHITE);
+        subject.setForeground(Color.BLACK);
+        subject.setFocusable(false);
         subject.addActionListener(this);
         mainpanel.add(subject);
 
@@ -165,7 +169,6 @@ public class ExamCalculator extends JFrame implements ActionListener, MouseListe
         result.setBounds(10, 0, 200, 50);
         resultpanel.add(result);
 
-        // History Panel==========================================================
         historypanel = new JPanel();
         historypanel.setSize(245, 370);
         historypanel.setBounds(640, 90, 245, 370);
@@ -192,18 +195,19 @@ public class ExamCalculator extends JFrame implements ActionListener, MouseListe
 
     @Override
     public void actionPerformed(ActionEvent e) {
+
         if (e.getSource() == submitBtn) {
             double ans = (Double.parseDouble(textfield.getText()) / ECconf.examMaxScore) * 50;
             if (ans > 30) {
                 result.setText(String.valueOf(df.format(ans)));
             } else if (ans < 29.99) {
                 result.setText(String.valueOf(df.format(ans)));
-                JOptionPane.showMessageDialog(null, "Tang Ina mo Mag Aral ka ng Mabuti BOBO",
-                        "STUPID MESSAGE", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Keep it Up Bro, You can still Pass!",
+                        "Motivational Message", JOptionPane.INFORMATION_MESSAGE);
             }
 
-            subjects.add(subject.getText());
-            historyList.add(String.valueOf(ans));
+            subjects.add(String.valueOf(subject.getSelectedItem()));
+            historyList.add(String.valueOf(df.format(ans)));
 
             if (historyList.size() > 1 && subjects.size() > 1) {
                 String historyprevResult = historyList.get(historyList.size() - 2);
@@ -236,9 +240,7 @@ public class ExamCalculator extends JFrame implements ActionListener, MouseListe
         if (e.getSource() == textfield) {
             textfield.setText(null);
         }
-        if (e.getSource() == subject) {
-            subject.setText(null);
-        }
+
         if (e.getSource() == toHome) {
             new MainMenu();
             dispose();
@@ -248,7 +250,7 @@ public class ExamCalculator extends JFrame implements ActionListener, MouseListe
             dispose();
         }
         if (e.getSource() == toGCAL) {
-            new GradeCalculator();
+            new NeededGradeCalculator();
             dispose();
         }
         if (e.getSource() == toCONFIG) {
