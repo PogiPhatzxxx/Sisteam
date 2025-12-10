@@ -2,7 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
+import java.util.*;
 
 public class GWACalculator extends JFrame implements ActionListener, MouseListener {
 
@@ -261,14 +261,14 @@ public class GWACalculator extends JFrame implements ActionListener, MouseListen
 
             for (JPanel coursesPanel : panelsArray) {
 
-                JComboBox<String> subjectsField = (JComboBox<String>) coursesPanel.getComponent(1);
-                JTextField unitsField = (JTextField) coursesPanel.getComponent(2);
-                JLabel avgLabel = (JLabel) coursesPanel.getComponent(3);
+                JComboBox<String> subjectsField = (JComboBox<String>) coursesPanel.getComponent(0);
+                JTextField unitsField = (JTextField) coursesPanel.getComponent(1);
+                JLabel avgLabel = (JLabel) coursesPanel.getComponent(2);
 
-                JTextField prelim = (JTextField) coursesPanel.getComponent(5);
-                JTextField mid = (JTextField) coursesPanel.getComponent(6);
-                JTextField prefi = (JTextField) coursesPanel.getComponent(7);
-                JTextField fin = (JTextField) coursesPanel.getComponent(8);
+                JTextField prelim = (JTextField) coursesPanel.getComponent(4);
+                JTextField mid = (JTextField) coursesPanel.getComponent(5);
+                JTextField prefi = (JTextField) coursesPanel.getComponent(6);
+                JTextField fin = (JTextField) coursesPanel.getComponent(7);
 
                 double units = 0, avg = 0;
                 double p1 = 0, m1 = 0, pf1 = 0, f1 = 0;
@@ -294,7 +294,7 @@ public class GWACalculator extends JFrame implements ActionListener, MouseListen
                 double gwa = totalWeighted / totalUnits;
                 gwaLabel.setText("GWA : " + df.format(gwa) + "%");
 
-                if (gwa >= 75) {
+                if (gwa >= 69.50) {
                     statusLabel.setText("Status : PASSING");
                     statusLabel.setForeground(new Color(0, 150, 0));
                 } else {

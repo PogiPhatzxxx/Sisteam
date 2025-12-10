@@ -2,7 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
+import java.util.*;
 
 public class NeededGradeCalculator extends JFrame implements ActionListener, MouseListener {
 

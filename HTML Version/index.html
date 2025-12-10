@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASTIG-CAL - by @Phatz</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Login Page -->
+    <div id="loginPage" class="page active">
+        <div class="login-container">
+            <div class="login-left">
+                <div class="cyber-grid"></div>
+                <div class="glitch-text" data-text="ASTIG-CAL">ASTIG-CAL</div>
+            </div>
+            <div class="login-right">
+                <div class="login-form">
+                    
+                    <div class="input-group">
+                        <label for="course">COURSE SELECTION</label>
+                        <select id="course" class="cyber-select">
+                            <option value="">Select Course</option>
+                            <option value="BSIT">BSIT</option>
+                            <option value="BMMA">BMMA</option>
+                            <option value="BSIS">BSIS</option>
+                            <option value="BSBA">BSBA</option>
+                            <option value="BSA">BSA</option>
+                            <option value="BSTM">BSTM</option>
+                            <option value="BSHM">BSHM</option>
+                        </select>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="username">USERNAME</label>
+                        <input type="text" id="username" class="cyber-input" placeholder="Enter username">
+                    </div>
+
+                    <div class="input-group">
+                        <label for="idnumber">ID NUMBER</label>
+                        <input type="text" id="idnumber" class="cyber-input" placeholder="Enter ID number">
+                    </div>
+
+                    <button id="loginBtn" class="cyber-btn primary">
+                        <span class="btn-text">LOGIN</span>
+                        <span class="btn-glitch"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Menu -->
+    <div id="mainMenuPage" class="page">
+        <header class="top-nav">
+            <div class="nav-left">
+                <img src="assets/img3.png" alt="Logo" class="nav-logo">
+                <span class="app-title">ASTIG-CAL</span>
+            </div>
+            <div class="nav-right">
+                <span id="displayUsername" class="user-info"></span>
+                <span id="displayId" class="user-info"></span>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <div class="welcome-section">
+                <h1 class="glitch-title" data-text="WELCOME TO ASTIG-CAL">WELCOME TO ASTIG-CAL</h1>
+                <p class="welcome-desc">Choose a calculator to get started</p>
+            </div>
+
+            <div class="calculator-grid">
+                <div class="calc-card" data-calc="needed">
+                    <div class="card-icon">
+                        <img src="assets/img4.png" alt="Needed Grade">
+                    </div>
+                    <h3>Needed Grade Calculator</h3>
+                    <p>Calculate your needed grades to pass with the 4-term grading system</p>
+                    <button class="card-btn">Open Calculator</button>
+                </div>
+
+                <div class="calc-card" data-calc="gwa">
+                    <div class="card-icon">
+                        <img src="assets/img5.png" alt="GWA">
+                    </div>
+                    <h3>GWA Calculator</h3>
+                    <p>Calculate your GWA across multiple courses with units</p>
+                    <button class="card-btn">Open GWA Calculator</button>
+                </div>
+
+                <div class="calc-card" data-calc="exam">
+                    <div class="card-icon">
+                        <img src="assets/img6.png" alt="Exam">
+                    </div>
+                    <h3>Exam Calculator</h3>
+                    <p>Calculate your Initial grade in exams</p>
+                    <button class="card-btn">Open Exam Calculator</button>
+                </div>
+            </div>
+
+            <div class="info-panel">
+                <div class="grading-info">
+                    <h4>Grading System:</h4>
+                    <p>Prelim 20% • Midterm 20% • Pre-final 20% • Final 40%</p>
+                </div>
+                <div class="passing-info">
+                    <h4>Passing Grade:</h4>
+                    <p id="passingGrade">59.50%.</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Needed Grade Calculator -->
+    <div id="neededCalcPage" class="page">
+        <header class="calc-header">
+            <div class="header-nav">
+                <button class="nav-btn" data-page="mainMenu">
+                    <img src="assets/toHOMEimg.png" alt="Home">
+                </button>
+                <button class="nav-btn" data-page="gwa">
+                    <img src="assets/toGWAimg.png" alt="GWA">
+                    <span>GWA</span>
+                </button>
+                <button class="nav-btn" data-page="exam">
+                    <img src="assets/toECALimg.png" alt="Exam">
+                    <span>ECAL</span>
+                </button>
+                <button class="nav-btn config-btn">
+                    <img src="assets/toCONFIGimg.png" alt="Config">
+                    <span>CONFIG</span>
+                </button>
+            </div>
+        </header>
+
+        <main class="calc-content">
+            <div class="calc-main">
+                <div class="calc-title">
+                    <img src="assets/img4.2.png" alt="Icon">
+                    <h2>NEEDED GRADE CALCULATOR</h2>
+                </div>
+
+                <div class="grade-inputs">
+                    <div class="input-row">
+                        <div class="input-group">
+                            <label>SUBJECT</label>
+                            <input type="text" id="ngCustomSubject" class="cyber-input" placeholder="Enter subject name here">
+                        </div>
+                    </div>
+
+                    <div class="input-row">
+                        <div class="input-group">
+                            <label>PRELIM</label>
+                            <input type="number" id="ngPrelim" class="cyber-input" value="0" min="0" max="100">
+                        </div>
+                        <div class="input-group">
+                            <label>MIDTERM</label>
+                            <input type="number" id="ngMidterm" class="cyber-input" value="0" min="0" max="100">
+                        </div>
+                    </div>
+
+                    <div class="input-row">
+                        <div class="input-group">
+                            <label>PRE-FINAL</label>
+                            <input type="number" id="ngPrefinal" class="cyber-input" value="0" min="0" max="100">
+                        </div>
+                        <div class="input-group">
+                            <label>FINAL</label>
+                            <input type="number" id="ngFinal" class="cyber-input" value="0" min="0" max="100">
+                        </div>
+                    </div>
+
+                    <button id="ngCalculate" class="cyber-btn primary">CALCULATE</button>
+                </div>
+            </div>
+
+            <div class="history-panel">
+                <h3>HISTORY</h3>
+                <div id="ngHistory" class="history-list"></div>
+            </div>
+        </main>
+    </div>
+
+    <!-- GWA Calculator -->
+    <div id="gwaCalcPage" class="page">
+        <header class="calc-header">
+            <div class="header-nav">
+                <button class="nav-btn" data-page="mainMenu">
+                    <img src="assets/toHOMEimg.png" alt="Home">
+                </button>
+                <button class="nav-btn" data-page="needed">
+                    <img src="assets/toGCALimg.png" alt="Needed">
+                    <span>NGCAL</span>
+                </button>
+                <button class="nav-btn" data-page="exam">
+                    <img src="assets/toECALimg.png" alt="Exam">
+                    <span>ECAL</span>
+                </button>
+                <button class="nav-btn config-btn">
+                    <img src="assets/toCONFIGimg.png" alt="Config">
+                    <span>CONFIG</span>
+                </button>
+            </div>
+        </header>
+
+        <main class="gwa-content">
+            <div class="gwa-title">
+                <img src="assets/img5.2.png" alt="Icon">
+                <h2>GWA CALCULATOR</h2>
+            </div>
+
+            <div class="gwa-stats">
+                <div class="stat-item">
+                    <span class="stat-label">GWA:</span>
+                    <span id="gwaValue" class="stat-value">00.00%</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat-item">
+                    <span class="stat-label">Total Units:</span>
+                    <span id="unitsValue" class="stat-value">0</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat-item">
+                    <span class="stat-label">Status:</span>
+                    <span id="statusValue" class="stat-value">-</span>
+                </div>
+                <button id="addCourse" class="cyber-btn secondary">ADD COURSE</button>
+                <button id="clearAllCourses" class="cyber-btn clear-all-gwa">CLEAR ALL</button>
+            </div>
+
+            <div class="courses-container">
+                <div id="coursesList" class="courses-list"></div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Exam Calculator -->
+    <div id="examCalcPage" class="page">
+        <header class="calc-header">
+            <div class="header-nav">
+                <button class="nav-btn" data-page="mainMenu">
+                    <img src="assets/toHOMEimg.png" alt="Home">
+                </button>
+                <button class="nav-btn" data-page="gwa">
+                    <img src="assets/toGWAimg.png" alt="GWA">
+                    <span>GWA</span>
+                </button>
+                <button class="nav-btn" data-page="needed">
+                    <img src="assets/toGCALimg.png" alt="Needed">
+                    <span>NGCAL</span>
+                </button>
+                <button class="nav-btn config-btn">
+                    <img src="assets/toCONFIGimg.png" alt="Config">
+                    <span>CONFIG</span>
+                </button>
+            </div>
+        </header>
+
+        <main class="calc-content">
+            <div class="calc-main">
+                <div class="calc-title">
+                    <img src="assets/img6.2.png" alt="Icon">
+                    <h2>EXAM INITIAL GRADE CALCULATOR</h2>
+                </div>
+
+                <div class="exam-inputs">
+                    <div class="input-group">
+                        <label>SUBJECT</label>
+                        <input type="text" id="examCustomSubject" class="cyber-input" placeholder="Enter subject name here">
+                    </div>
+
+                    <div class="input-group">
+                        <label>ENTER YOUR EXAM SCORE:</label>
+                        <div class="exam-input-row">
+                            <input type="number" id="examScore" class="cyber-input" placeholder="Enter here" min="0" max="100">
+                            <button id="examCalculate" class="cyber-btn primary">CALCULATE</button>
+                        </div>
+                    </div>
+
+                    <div class="result-group">
+                        <label>RESULT:</label>
+                        <div class="result-display">
+                            <span id="examResult">0.00</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="history-panel">
+                <h3>HISTORY</h3>
+                <div id="examHistory" class="history-list"></div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Configuration Modal -->
+    <div id="configModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="configTitle">CONFIGURATION</h3>
+                <button class="close-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="configForm"></div>
+                <button id="saveConfig" class="cyber-btn primary">SAVE CONFIGURATION</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+
+    <footer class="simple-footer">
+        <p class="footer-credit">Created by <a href="https://www.tiktok.com/@phatxzhh"> @PHATZ</a></p>
+    </footer>
+</body>
+</html>
